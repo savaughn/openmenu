@@ -10,3 +10,4 @@ tools/*.exe
 tools/*.dbg
 tools/*.com
 tools/cosmo
+build/
