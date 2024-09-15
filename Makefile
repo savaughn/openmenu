@@ -32,15 +32,22 @@ build/%.o: %.c
 $(TARGET): $(OBJS)
 	@echo \> $(CC) -o $(TARGET)
 	@$(CC) -o $(TARGET) $(LDFLAGS) $(CFLAGS) $(OBJS) $(LIBS) $(MAP)
-	@echo $(notdir $(OBJCOPY)) -R .stack -O binary $@ $(basename $@).bin
+	@$(notdir $(OBJCOPY)) -R .stack -O binary $@ $(basename $@).bin
 	@$(OBJCOPY) -R .stack -O binary  $@ $(basename $@).bin
 	@$(KOS_BASE)/utils/scramble/scramble $(basename $@).bin build/1ST_READ.BIN
+	@echo "Created 1ST_READ.BIN successfully"
+	@$(MAKE) copy
 
 .PHONY: clean
 .PHONY: clean-elf
+.PHONY: copy
 
 clean:
 	-@$(RM) -f $(TARGET) $(OBJS) build/*.bin build/*.BIN
 
 clean-elf:
 	-@$(RM) -f $(TARGET)
+
+copy:
+	@cp build/1ST_READ.BIN /Applications/GDMENUCardManager.app/Contents/MacOS/tools/openMenu/menu_data/1ST_READ.BIN
+	@echo "Copied 1ST_READ.BIN to GDMENUCardManager.app/tools/openMenu/menu_data/1ST_READ.BIN"
